@@ -1,0 +1,210 @@
+---
+title: "Calculating PBS and Fst"
+output: html_document
+author: "Made by Abby, editted by Emma"
+---
+## Shared by Abby, editted by Emma, please change directory paths 
+
+```{R}
+# The PBS R file takes in fam files and frequency files from plink for 3 populations and outputs
+# a file containing population branch statistics for each snp and each population
+
+# The user of this document needs to change the path of the input files and the path of the output
+# file at the very end of the document. 
+
+# load fam files - map files are also acceptable inputs 
+#pop1_fam <- read.table("/Users/gretagerdes/Documents/first_year/plink/for_greta/PBS/peru.fam", header = TRUE )
+#pop2_fam <- read.table("/Users/gretagerdes/Documents/first_year/plink/for_greta/PBS/mex.fam", header = TRUE)
+#pop3_fam <- read.table("/Users/gretagerdes/Documents/first_year/plink/for_greta/PBS/ceu.fam", header = TRUE)
+
+# gather population information
+#pop_size1 <- nrow(pop1_fam)
+#pop_size2 <- nrow(pop2_fam)
+#pop_size3 <- nrow(pop3_fam)
+
+dir = "~/project-awbigham/Daily/202502/dmc-output-bottomselscan"
+
+format_freq = list() 
+for (i in c(1:26) ) {
+  table_file = paste(dir, i,"combined_allele_frequencies_noNA.txt", sep ="/")
+  if (file.exists(table_file)){
+    freq_matrix = read.table(table_file, h=T)
+    format = t(freq_matrix)
+    colnames(format) <- c(format[1,])
+    format <- format[-1, ]
+    format_freq[[i]] = format
+  }
+}
+
+```
+
+
+```{R}
+
+# calculates pairwise fst for 2 populations where c is the relative size of the ith population
+calculate_Fst <- function(freq1,freq2,c1,c2){
+  if(freq1 == 0 | freq2 == 0){
+    return(NA)
+  }
+  p_bar <- (freq1+freq2)/2
+  q_bar <- ((1 - freq1)+ (1 - freq2))/2
+  # expected heterozygosity based on HWE 
+  HS_1 <- 2*freq1*q_bar
+  HS_2 <- 2*freq2*q_bar
+  HS <- (HS_1*c1 + HS_2*c2)/(c1+c2)
+  # total expected heterozygosity
+  HT <- 2*p_bar*q_bar
+  # calculate Fst 
+  Fst <- (HT - HS)/HT
+  
+  # treat negative Fst values as 0 
+  if (Fst < 0){
+    return(0)
+  }else{
+    return(Fst)
+  }
+}
+
+
+# Your calculate_Fst function
+calculate_Fst <- function(freq1, freq2, c1, c2) {
+  if(freq1 == 0 | freq2 == 0) {
+    return(NA)
+  }
+  p_bar <- (freq1 + freq2) / 2
+  q_bar <- ((1 - freq1) + (1 - freq2)) / 2
+  # Expected heterozygosity based on HWE
+  HS_1 <- 2 * freq1 * q_bar
+  HS_2 <- 2 * freq2 * q_bar
+  HS <- (HS_1 * c1 + HS_2 * c2) / (c1 + c2)
+  # Total expected heterozygosity
+  HT <- 2 * p_bar * q_bar
+  # Calculate Fst
+  Fst <- (HT - HS) / HT
+  
+  # Treat negative Fst values as 0
+  if (is.na(Fst)){
+    return(NA)
+  } else if (Fst < 0) {
+    return(0)
+  } else {
+    return(Fst)
+  }
+}
+
+
+# Initialize an empty data frame to store results
+results_df <- data.frame(SNP = character(),
+                         pop1 = character(),
+                         pop2 = character(),
+                         fst = numeric(),
+                         stringsAsFactors = FALSE, 
+                         window = numeric())
+
+c_values = c("AFR" = 661, "AMR" =  347, "EAS" =  504, "EUR" = 502, "EUROPEAN" = 159, "MEXICAN" =  91, "MONPA" = 48, "PERUVIAN" = 599, "SAS" =  489)
+
+
+# Iterate over each row
+
+for (win in 1:length(format_freq)){
+  if ( ! is.null(format_freq[[win]]) ) {
+    df = format_freq[[win]] 
+    
+    # Iterate over each row
+    for (i in seq_len(nrow(df))) {
+      
+      # Extract the allele frequencies for the current row
+      freqs <- as.numeric(df[i, ])
+      
+      # Iterate over all pairs of columns
+      # for (j in seq_len(ncol(df))) {
+      for (j in c(1)){
+        for (k in c(7,8)) {
+        # for (k in seq_len(ncol(df))) {
+          if (j < k) { # Only calculate for unique pairs
+            
+            # Calculate Fst for the pair of populations
+            fst_value <- calculate_Fst(freqs[j], freqs[k], 
+                                       c_values[colnames(df)[j]], 
+                                       c_values[colnames(df)[k]])
+            
+            # Append the result to the results data frame
+            results_df <- rbind(results_df,
+                                data.frame(SNP = rownames(df)[i],
+                                           pop1 = colnames(df)[j],
+                                           pop2 = colnames(df)[k],
+                                           fst = fst_value,
+                                           window = win,
+                                           stringsAsFactors = FALSE))
+          }
+        }
+      }
+    }
+  }
+}
+
+write.csv(results_df, "~/project-awbigham/Daily/202502/fst/fst_results.csv")
+
+```
+
+
+```{R}
+fst_results = read.table("~/project-awbigham/Daily/202502/fst/fst_results.csv", h=T, sep =",")
+
+dir = "~/project-awbigham/Daily/202502/dmc-output-bottomselscan"
+
+big_positions = data.frame()
+for (i in c(1:26) ) {
+  table_file = paste(dir, "/", i,"/position_dataframe_", i, ".csv", sep ="")
+  if (file.exists(table_file)){
+    snp_info = read.table(table_file, sep=",", h=T)
+    big_positions = rbind(snp_info, big_positions)
+    
+  }
+}
+
+fst_results = merge(fst_results, big_positions, by.x=c("SNP"), by.y =c("ID"), all.x=T)
+
+write.csv(fst_results, "~/project-awbigham/Daily/202502/fst/fst_results.csv")
+
+
+```
+
+# Plotting Fst
+```{R}
+fst_results = read.table("~/project-awbigham/Daily/202502/fst/fst_results.csv", h=T, sep =",")
+
+hist(fst_results[fst_results$window %in% c(18) & fst_results$pop2 == "PERUVIAN" & fst_results$fst == 0,]$POS, xlab="POS", ylab = "Frequency FST = 0", main="Window 18")
+
+
+
+ofinterest = c(18)
+ggplot(fst_results[fst_results$window %in% ofinterest & fst_results$pop2 == "PERUVIAN",], aes(x=POS, y = fst, color=pop2))+
+  #geom_line() + 
+  geom_point() +
+  facet_wrap(vars(factor(window, ofinterest), X.CHROM),scales="free", nrow=2)+
+  #geom_vline(data = rstable[rstable$Window %in% ofinterest,], aes(xintercept = chrom_start), color = "black", linetype = #"dashed") +
+  #geom_text(data = rstable, aes(x = -Inf, y = chrom_start, label = snp), hjust = -0.1, vjust = -0.5)+
+  theme_apa()+
+  scale_color_manual(values=met.brewer("Java", 5))+
+  labs(y="FST")
+
+binning = fst_results[fst_results$window == c(7),]
+binning$bins <- cut(binning$POS,breaks = 30)
+# Points:
+ggplot(binning, aes(x = bins, y = fst)) +
+  stat_summary(fun = "mean", geom = "point")+
+  theme_apa()+
+  labs(y="Average FST")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+# Plotting density 
+```{R}
+fst_results = read.table("~/project-awbigham/Daily/202502/fst/fst_results.csv", h=T, sep =",")
+
+hist(fst_results[fst_results$window %in% c(7) & fst_results$pop2 == "PERUVIAN",]$POS, xlab="POS", ylab = "Number of SNPs", main="Window 7")
+
+```
