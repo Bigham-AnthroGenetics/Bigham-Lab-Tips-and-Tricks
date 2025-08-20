@@ -1,5 +1,4 @@
-# Document Title
-Example markdown document
+# Example markdown document
 
 ## Introduction
 
