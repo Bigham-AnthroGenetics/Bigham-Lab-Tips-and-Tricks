@@ -17,6 +17,11 @@ Now create a new *tmux* session and name it rstudio (but it can be anything).
 tmux new -s rstudio
 ```
 
+Attach this 
+```{bash}
+tmux a -t rstudio
+```
+
 Tmux is a terminal multiplexor. It will let us come back to our work in this terminal later. It's especially useful for RStudio server because if our terminal session is killed RStudio keeps running. However, using the same login node every time is important because our tmux session is linked to our login node. If we get connected to say loginnode3 next time, we'll have lost our work or more pertinent to RStudioServer won't be able to find our username and password again. 
 
 Okay now let's create a new file to store the Rstudio server info. I created a file in my home directory (I know bad practice but it's small) called *start_rstudio_apptainer* with this information: 
