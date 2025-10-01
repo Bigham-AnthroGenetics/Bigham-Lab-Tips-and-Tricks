@@ -61,7 +61,7 @@ First run this line ssh -N -L 8787:n7454:8787 eewade@hoffman2.idre.ucla.edu on y
 
 Then you'll simply copy and paste the http:// bit into your web browser, login, and viola! 
 
-Now let's exit our tmux session, so it keeps running in the background by typing control b and control d. 
+Now let's exit our tmux session, so it keeps running in the background by typing control b and then d. 
 
 To get back to the tmux session, type: 
 
