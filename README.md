@@ -7,7 +7,8 @@ This repo will be a collection of all things Bigham lab! It'll be continuously u
 * AccessingRStudioServer: how to use Rstudio server on Hoffman
 * markdownTemplate: quick outline for writing markdown like for Github repositories 
 * RmarkdownTemplate: quick outline for writing Rmarkdown
-* scripts/fst_script.Rmd: manual Fst calculations 
+* scripts/fst_script.Rmd: manual Fst calculations
+* DatabaseCheatSheet: some helpful websites
 
 
 * Plink tutorials:
