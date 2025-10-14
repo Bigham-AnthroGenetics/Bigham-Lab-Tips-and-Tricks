@@ -1,6 +1,6 @@
 # Some useful selection scan literature
 
-## Metrics
+## Classic Metrics
 - Extended haplotype homozygosity (EHH):  Sabeti, P., Reich, D., Higgins, J. et al. Detecting recent positive selection in the human genome from haplotype structure. Nature 419, 832–837 (2002).
    https://doi.org/10.1038/nature01140
     - Kind of the OG paper
