@@ -9,6 +9,7 @@ This repo will be a collection of all things Bigham lab! It'll be continuously u
 * RmarkdownTemplate: quick outline for writing Rmarkdown
 * scripts/fst_script.Rmd: manual Fst calculations
 * DatabaseCheatSheet: some helpful websites
+* SelectionScanResources: selection scan literature
 
 
 * Plink tutorials:
