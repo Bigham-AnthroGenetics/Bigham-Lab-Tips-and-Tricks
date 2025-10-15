@@ -1,5 +1,7 @@
 # Some useful selection scan literature
 
+## Reviews
+- Jasmin S. Rees, Sergi Castellano, Aida M. Andrés, The Genomics of Human Local Adaptation, Trends in Genetics,2020,https://doi.org/10.1016/j.tig.2020.03.006.
 ## Classic Metrics
 - Extended haplotype homozygosity (EHH):  Sabeti, P., Reich, D., Higgins, J. et al. Detecting recent positive selection in the human genome from haplotype structure. Nature 419, 832–837 (2002).
    https://doi.org/10.1038/nature01140
