@@ -69,4 +69,44 @@ To get back to the tmux session, type:
 tmux a -t rstudio
 ```
 
+```
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -N iHS_chr
+#$ -o /u/scratch/e/eewade/logs/$JOB_NAME.$TASK_ID.out
+#$ -e logs/$JOB_NAME.$TASK_ID.err
+#$ -t 1-22
+#$ -l h_vmem=32G
+#$ -pe share 8
+
+
+# Map task ID to chromosome
+CHR=$SGE_TASK_ID
+
+echo "Processing chromosome $CHR on host $(hostname)"
+
+. /u/local/Modules/default/init/modules.sh
+module load apptainer
+
+# Export R Libs directory
+## NOTE YOU MAY NEED TO UPDATE THE DEFINITION OF R_LIBS_USER TO
+## MATCH THE VERSION OF R YOU ARE USING (IF NOT USING h2-rstudio_4.1.0.sif)
+export R_LIBS_USER=$HOME/R/APPTAINER/h2-rstudio_4.1.0
+
+#
+# Run the job:
+#
+## REMEMBER TO SUBSTITUTE THE NAME OF THE R SCRIPT YOU INTEND TO RUN IN THE TWO LINES BELOW &
+## TO CHANGE THE RSTUDIO SERVER CONTAINER IF A DIFFERENT VERSION OF R IS NEEDED (TO SEE AVAILABLE 
+## VERSIONS OF R ISSUE: module load apptainer; ls $H2_CONTAINER_LOC/h2-rstudio*sif)
+#echo "/usr/bin/time -v apptainer exec $H2_CONTAINER_LOC/h2-rstudio_4.1.0.sif R CMD BATCH --no-save --no-restore myRtest.R output.$JOB_ID"
+/usr/bin/time -v apptainer  exec $H2_CONTAINER_LOC/h2-rstudio_4.1.0.sif R CMD BATCH --no-save --no-restore "--args $CHR" ~/project-awbigham/daily/202510/process-iHS-by-gene-batch.R /u/scratch/e/eewade/logs/output.$JOB_ID
+
+echo " "
+echo "Job myscript, ID no. $JOB_ID finished at:  "` date `
+echo " "
+### submit_rstudio.sh STOP ###
+```
+
 
