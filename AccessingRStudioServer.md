@@ -68,7 +68,7 @@ To get back to the tmux session, type:
 ```
 tmux a -t rstudio
 ```
-
+## Example batch submission script with Rstudio Server Apptainer Version of R
 ```
 #!/bin/bash
 #$ -cwd
