@@ -16,3 +16,4 @@ This repo will be a collection of all things Bigham lab! It'll be continuously u
 * Plink tutorials:
     * This website has some Plink tutorials and videos I’ve found useful! I want to say they have some toy data you could practice with. I think they might be geared towards GWAS, but it may still be helpful background https://www.colorado.edu/ibg/isg-workshop/online-lectures-and-practicals/common-rare-variant-association The plink documentation also has a tutorial with example data I think: https://zzz.bwh.harvard.edu/plink/tutorial.shtml
  * An Owner's Guide to the Human Genome by Jonathan Pritchard : https://web.stanford.edu/group/pritchardlab/HGbook.html
+* Classic papers! https://docs.google.com/spreadsheets/d/19tup7apWod0mlPpDWwehSD_TFE8MSbQ5IIg8_NB7Kx8/edit?gid=0#gid=0
