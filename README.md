@@ -11,6 +11,7 @@ This repo will be a collection of all things Bigham lab! It'll be continuously u
 * DatabaseCheatSheet: some helpful websites
 * SelectionScanResources: selection scan literature
 * Geography of Genetic Variants Browser: https://popgen.uchicago.edu/ggv/?data=%221000genomes%22&chr=1&pos=222087833
+* About detecting positive selection: https://mccoy-lab.github.io/hgv_modules/haplotype-based-signatures.html
 
 
 * Plink tutorials:
