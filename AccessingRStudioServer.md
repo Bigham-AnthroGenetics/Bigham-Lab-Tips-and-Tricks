@@ -28,7 +28,7 @@ Okay now let's create a new file to store the Rstudio server info. I created a f
 
 ```{bash}
 # get an interactive job
-qrsh -l h_data=10G,h_rt=6:00:00  
+# qrsh -l h_data=10G,h_rt=6:00:00  
 # Create small tmp directories for RStudio to write into
 mkdir -pv $SCRATCH/rstudiotmp/var/lib
 mkdir -pv $SCRATCH/rstudiotmp/var/run
@@ -40,10 +40,25 @@ apptainer run -B $SCRATCH/rstudiotmp/var/lib:/var/lib/rstudio-server -B $SCRATCH
 ## 
 
 ```
+Now save this file 
 
-We won't execute this file directly. Instead I save the file here for easy access and copy and paste the contents into the terminal when I want to run RStudioServer. Let's do that now. 
+And make it executable: 
 
-Okay after waiting a bit after our interactive session and the commands run. 
+```{bash}
+chmod +x start_rstudio_apptainer
+```
+
+To run this file, we need to first enter an interactive job (I keep the command for this commented into start_rstudio_apptainer so I can run ```{bash} cat start_rstudio_apptainer``` and copy and paste into my terminal if I forget (or if it's not my previous command and I can't just use the up arrow)
+
+```{bash}
+qrsh -l h_data=10G,h_rt=6:00:00  
+```
+
+Once we're into our interactive session, we can run our script: 
+
+```{bash}
+bash start_rstudio_apptainer
+```
 
 You'll have something like this: 
 
@@ -57,13 +72,13 @@ Your Rstudio USERNAME is: eewade
 Your Rstudio PASSWORD is: trmAeXmFIf
 Please run [CTRL-C] on this process to exit Rstudio
 ```
-First run this line ssh -N -L 8787:n7454:8787 eewade@hoffman2.idre.ucla.edu on your local terminal ** not on Hoffman **
+First run this line ssh -N -L 8787:n7454:8787 eewade@hoffman2.idre.ucla.edu on your local terminal *** not on Hoffman ***
 
 Then you'll simply copy and paste the http:// bit into your web browser, login, and viola! 
 
 Now let's exit our tmux session, so it keeps running in the background by typing control b and then d. 
 
-To get back to the tmux session, type: 
+To get back to the tmux session if need to access our password, type: 
 
 ```
 tmux a -t rstudio
