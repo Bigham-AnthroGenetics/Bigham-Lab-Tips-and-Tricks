@@ -6,4 +6,5 @@
     * Interactive view genome
 * Gnomad: https://gnomad.broadinstitute.org/
     *  Aggregating and harmonizing both exome and genome sequencing data from a wide variety of large-scale sequencing projects, and making summary data available for the wider scientific community.
-* 
+* 1000Genomes High Coverage: https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/
+   * Main site: https://www.internationalgenome.org/
