@@ -10,7 +10,8 @@ ssh [yourusername]@login1.hoffman2.idre.ucla.edu
 
 ### Move out of a login node and onto a compute node by starting an interactive session
 ```{bash}
-qrsh -l h_data=10G,h_rt=6:00:00  
+qrsh -l h_data=10G,h_rt=6:00:00
+# optional: ,highp for over 23:59:59
 
 ```
 
